@@ -8,12 +8,12 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-  const username = req.body.username;
+  const name = req.body.name;
   const role = req.body.role;
   const classname = req.body.classname;
 
   const newEnrolled = new Enrolled({
-    username,
+    name,
     role,
     classname,
   });
@@ -38,7 +38,7 @@ Enrolled.findByIdAndDelete(req.params.id)
 router.route('/update/:id').post((req, res) => {
 Enrolled.findById(req.params.id)
     .then(enrolled => {
-    enrolled.username = req.body.username;
+    enrolled.name = req.body.name;
     enrolled.role = req.body.role;
     enrolled.classname = req.body.classname;
     enrolled.save()
