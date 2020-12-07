@@ -32,7 +32,7 @@ Classroom.findByIdAndDelete(req.params.id)
 router.route('/update/:id').post((req, res) => {
 Classroom.findById(req.params.id)
     .then(classroom => {
-    classroom.username = req.body.classname;
+    classroom.classname = req.body.classname;
     classroom.save()
         .then(() => res.json('Classroom updated!'))
         .catch(err => res.status(400).json('Error: ' + err));

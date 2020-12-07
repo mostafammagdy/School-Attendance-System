@@ -33,15 +33,23 @@ export default class Login extends Component {
 
     handleSubmitClick = (e) => {
         e.preventDefault();
-        window.location = '/teacher';
 
-
+        /*
         if (this.state.account === 'Teacher') {
             this.loginTeacher();
         } else {
             this.loginSecretary();
         }
-
+        */
+       console.log(this.state.account)
+       if (this.state.account === "Admin")
+           window.location = '/admin';
+       if (this.state.account === "Secretary")
+           window.location = '/secretary';
+       if (this.state.account === "Teacher")
+           window.location = '/teacher';
+       if (this.state.account === "Parent")
+           window.location = '/parent';
 
 
 
@@ -49,7 +57,7 @@ export default class Login extends Component {
 
     }
 
-
+/*
     loginSecretary() {
 
         const acct = {
@@ -108,7 +116,7 @@ export default class Login extends Component {
 
 
     }
-
+*/
 
     redirectToTeacher() {
 
@@ -127,6 +135,7 @@ export default class Login extends Component {
         this.setState({
             account: e.target.value
         })
+
 
     }
 
@@ -147,10 +156,10 @@ export default class Login extends Component {
                                             <div className="form-group text-left">
                                                 <label for="custom-select">Select account type:</label>
                                                 <select className="custom-select" id="classname" onChange={(e) => { this.setType(e) }}>
-                                                    <option value="Admin">Teacher</option>
+                                                    <option value="Admin">Admin</option>
                                                     <option value="Secretary">Secretary</option>
-                                                    <option value="Teacher">Secretary</option>
-                                                    <option value="Parent">Secretary</option>
+                                                    <option value="Teacher">Teacher</option>
+                                                    <option value="Parent">Parent</option>
                                                 </select>
 
 
