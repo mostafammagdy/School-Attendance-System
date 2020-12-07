@@ -25,6 +25,24 @@ router.route('/add').post((req, res) => {
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/login').post((req, res) => {
+
+  const {username, password} = req.body;
+  Teacher.findOne({username})
+  .then(teacher => {
+    if (teacher.password !== password){
+      return res.status(204).json('Username and password do not match');
+    }else{
+      return res.status(200).json('Login successful');
+    }
+
+  })
+  .catch(err => res.status(400).json('Error: User not found ' + err));
+
+
+
+});
+
 router.route('/:id').get((req, res) => {
     Teacher.findById(req.params.id)
       .then(teacher => res.json(teacher))
