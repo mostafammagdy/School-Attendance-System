@@ -9,7 +9,7 @@ const Records = props => (
         <td>{props.record.name}</td>
         <td>{props.record.school}</td>
         <td><a href='#'>Edit</a></td>
-        <td><a href='#'>Delete</a></td>
+        <td><a href="#" onClick={() => { props.deleteSecretary(props.record._id) }}>Delete</a></td>
     </tr>
 )
 
@@ -21,6 +21,12 @@ export default class Admin extends Component {
         this.showSchool = this.showSchool.bind(this);
         this.createSecretary = this.createSecretary.bind(this);
         this.manageSecretary = this.manageSecretary.bind(this);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeName = this.onChangeName.bind(this);
+        this.onChangeSchool = this.onChangeSchool.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.deleteSecretary = this.deleteSecretary.bind(this)
 
 
         this.state = {
@@ -28,6 +34,10 @@ export default class Admin extends Component {
             create: false,
             manage: false,
             sec: [],
+            username: "",
+            password: "",
+            school: "",
+            name: "",
 
         };
     }
@@ -40,26 +50,118 @@ export default class Admin extends Component {
             .catch((error) => {
                 console.log(error);
             })
-
-
     }
-    recordList() {
+    deleteSecretary(id) {
+        axios.delete('http://localhost:5000/secretarys/'+id)
+          .then(response => { console.log(response.data)});
+    
+        this.setState({
+          sec: this.state.sec.filter(el => el._id !== id)
+        })
+      }
 
-        return this.state.sec.map(s => {
-            return <Records record={s} />;
+    onChangeUsername(e) {
+        this.setState({
+            username: e.target.value
         })
     }
 
-    createAccounts(){
-        return (
-            <h1> Create Account </h1>
-        )
+    onChangePassword(e) {
+        this.setState({
+            password: e.target.value
+        })
     }
 
-    manageAccounts(){
+    onChangeName(e) {
+        this.setState({
+            name: e.target.value
+        })
+    }
+
+    onChangeSchool(e) {
+        this.setState({
+            school: e.target.value
+        })
+    }
+
+    recordList() {
+
+        return this.state.sec.map(s => {
+            return <Records record={s} deleteSecretary={this.deleteSecretary} />;
+        })
+    }
+
+    createAccounts() {
         return (
             <div>
-            <h1> Manage Account </h1>
+                <h3>Create New Secretary Account</h3>
+                <form onSubmit={this.onSubmit}>
+                    <div className="form-group">
+                        <label>Name: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.name}
+                            onChange={this.onChangeName}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Username: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.username}
+                            onChange={this.onChangeUsername}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Password: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.password}
+                            onChange={this.onChangePassword}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label for="custom-select">Select School:</label>
+                        <select className="custom-select" id="classname" value={this.state.school}
+                            onChange={this.onChangeSchool} >
+                            <option value="A. Y. Jackson Secondary School">A. Y. Jackson Secondary School</option>
+                            <option value="Agincourt Collegiate Institute">Agincourt Collegiate Institute</option>
+                            <option value="Birchmount Park Collegiate Institute">Birchmount Park Collegiate Institute</option>
+                            <option value="C. W. Jefferys Collegiate Institute">C. W. Jefferys Collegiate Institute</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <input type="submit" value="Create User" className="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        )
+    }
+    onSubmit(e) {
+        e.preventDefault();
+
+        const secret = {
+            name: this.state.name,
+            username: this.state.username,
+            password: this.state.password,
+            school: this.state.school,
+        }
+
+        console.log(secret);
+
+        axios.post('http://localhost:5000/secretarys/add', secret)
+            .then(res => console.log(res.data));
+
+        window.location = '/admin';
+    }
+    
+    manageAccounts() {
+        return (
+            <div>
+                <h1> Manage Account </h1>
                 <table className="table">
                     <thead className="thead-light">
                         <tr>
@@ -73,8 +175,8 @@ export default class Admin extends Component {
                         {this.recordList()}
                     </tbody>
                 </table>
-                </div>
-            );
+            </div>
+        );
     }
 
     schoolTable() {
@@ -328,16 +430,16 @@ export default class Admin extends Component {
                             </div>
                             <div class="sb-sidenav-footer">
                                 <div class="small">Logged in as:</div>
-                                
-                    </div>
+
+                            </div>
                         </nav>
                     </div>
                     <div id="layoutSidenav_content">
-                    {this.state.shows == true ? this.schoolTable() :
-                    this.state.create == true ? this.createAccounts() :
-                this.state.manage == true ? this.manageAccounts(): this.menu()} 
+                        {this.state.shows == true ? this.schoolTable() :
+                            this.state.create == true ? this.createAccounts() :
+                                this.state.manage == true ? this.manageAccounts() : this.menu()}
 
-                    <footer class="py-4 bg-light mt-auto">
+                        <footer class="py-4 bg-light mt-auto">
                             <div class="container-fluid">
                                 <div class="d-flex align-items-center justify-content-between small">
                                     <div class="text-muted">Copyright &copy; School System 2020</div>
