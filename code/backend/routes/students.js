@@ -8,7 +8,6 @@ function uuidv4() {
     });
   }
 
-
 router.route('/').get((req, res) => {
   Student.find()
     .then(students => res.json(students))
@@ -17,7 +16,7 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
   const name = req.body.name; 
-  const uuid = uuidv4();
+  const uuid = Date.now()
 
   const newStudent = new Student({
     name,

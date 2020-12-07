@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "./styles.css"
-
 import axios from 'axios';
 
 
-const Students = props => (
+const Records = props => (
     <tr class="attendance">
-        <td><input type="hidden" value={props.student.name} />{props.student.name}</td>
-        <td>{props.student.studentID}</td>
-        <td><input type="radio" name={props.student.name} value="Present" />&nbsp;</td>
-        <td><input type="radio" name={props.student.name} value="Absent" />&nbsp;</td>
-        <td><input type="radio" name={props.student.name} value="Late" />&nbsp;</td>
+        <td>{props.record.name}</td>
+        <td>{props.record.status}</td>
+        <td>{props.record.createdAt.substring(0, 10)}</td>
     </tr>
 )
 
@@ -20,21 +17,26 @@ export default class Teacher extends Component {
     constructor(props) {
         super(props);
 
-        this.onChangeClassroom = this.onChangeClassroom.bind(this);
-        this.takeAttendance = this.takeAttendance.bind(this);
-
+        this.onChangeStudent = this.onChangeStudent.bind(this);
 
         this.state = {
-            classroom: '',
-            status: '',
+            student: '',
             students: [],
-            currentstudent: [],
-            classrooms: []
+            records: [],
+            currentrecords: []
         };
     }
 
     componentDidMount() {
-        axios.get('http://localhost:5000/enrolleds/')
+        axios.get('http://localhost:5000/attendances/')
+            .then(response => {
+                this.setState({ records: response.data })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+        axios.get('http://localhost:5000/parents/')
             .then(response => {
                 this.setState({ students: response.data })
             })
@@ -42,126 +44,62 @@ export default class Teacher extends Component {
                 console.log(error);
             })
 
-        axios.get('http://localhost:5000/classrooms/')
-            .then(response => {
-                this.setState({ classrooms: response.data })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+
     }
 
-    onChangeClassroom(e) {
+    onChangeStudent(e) {
         var temp = []
-        this.state.students.forEach((s) => {
-            if (s.classname == e.target.value && s.role == "student") {
+        this.state.records.forEach((s) => {
+            if (s.name == e.target.value) {
                 temp.push(s);
             }
         })
         console.log(temp);
 
         this.setState({
-            classroom: e.target.value,
-            currentstudent: temp
+            student: e.target.value,
+            currentrecords: temp
         })
     }
 
-    studentList() {
+    recordList() {
 
-        return this.state.currentstudent.map(s => {
-            return <Students student={s} />;
+        return this.state.currentrecords.map(s => {
+            return <Records record={s} />;
         })
     }
 
-    studentTable() {
+    recordTable() {
         return (
-            <form onSubmit={this.takeAttendance}>
-                <table className="table">
-                    <thead className="thead-light">
-                        <tr>
-                            <th>Name</th>
-                            <th>Student ID</th>
-                            <th>Present</th>
-                            <th>Absent</th>
-                            <th>Late</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.studentList()}
-                    </tbody>
-                </table>
-                <div className="form-group">
-                    <input type="submit" value="Submit Attendance" className="btn btn-primary" />
-                </div>
-            </form>
+            <table className="table">
+                <thead className="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.recordList()}
+                </tbody>
+            </table>
         );
     }
 
-    classSelect() {
+    studentSelect() {
         return (
             <div>
-                <select className="custom-select" id="classname"
+                <select className="custom-select" id="studentRecord"
                     defaultValue=""
-                    value={this.state.classroom}
-                    onChange={this.onChangeClassroom} >
-                    <option value=""> -- select an classroom -- </option>
-                    {this.state.classrooms.map(classroom => (
-                        <option key={classroom.classname} value={classroom.classname}>{classroom.classname}</option>
+                    value={this.state.student}
+                    onChange={this.onChangeStudent} >
+                    <option value=""> -- select a student -- </option>
+                    {this.state.students.map(student => (
+                        <option key={student.student} value={student.student}>{student.student}</option>
                     ))}
                 </select>
             </div>
         );
-
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-
-        const attendance = {
-            name: this.state.name,
-            classname: this.state.classname,
-            status: this.state.status,
-        }
-
-        console.log(attendance);
-
-        axios.post('http://localhost:5000/attendances/add', attendance)
-            .then(res => console.log(res.data));
-
-        window.location = '/';
-    }
-
-    takeAttendance(e) {
-        e.preventDefault();
-        console.log("test")
-        var check = "";
-        var a = "";
-        var attendance = document.getElementsByClassName("attendance");
-        for (var i = 0; i < attendance.length; i++) {
-            a = attendance[i].cells;
-            if (a[2].children[0].checked == true) {
-                check = a[2].children[0].value;
-            }
-            if (a[3].children[0].checked == true) {
-                check = a[3].children[0].value;
-            }
-            if (a[4].children[0].checked == true) {
-                check = a[4].children[0].value;
-            }
-
-            console.log(a[0].children[0].value);
-            console.log(check);
-
-            const att = {
-                name: a[0].children[0].value,
-                classname: this.state.classroom,
-                status: check,
-            }
-
-            axios.post('http://localhost:5000/attendances/add', att)
-                .then(res => console.log(res.data));
-        }
-        window.location = '/';
 
     }
 
@@ -170,11 +108,12 @@ export default class Teacher extends Component {
         side[0].classList.toggle("sb-sidenav-toggled");
     }
 
+
     render() {
         return (
             <div class="sideToggle">
                 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-                    <a class="navbar-brand" href="index.html">Teacher</a>
+                    <a class="navbar-brand" href="index.html">Parent</a>
                     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#" onClick={this.toggleSidebar}><i class="fas fa-bars"></i></button>
                     {/*<!-- Navbar Search-->*/}
                     <div class="input-group">
@@ -202,7 +141,6 @@ export default class Teacher extends Component {
                             </a>
 
 
-
                                 </div>
                             </div>
                             <div class="sb-sidenav-footer">
@@ -220,21 +158,19 @@ export default class Teacher extends Component {
                                 </ol>
                                 <div class="row">
                                     <div class="col-3">
-                                        <h2>Select Classroom</h2>
+                                        <h2>Select Student</h2>
                                     </div>
                                     <div class="col">
-                                        {this.classSelect()}
+                                        {this.studentSelect()}
                                     </div>
                                 </div>
                                 <hr />
                                 <div class="row">
                                     <div class="col">
-                                        {this.studentTable()}
+                                        {this.recordTable()}
                                     </div>
                                 </div>
-                                <div class="row test">
-                                    {this.state.classroom}
-                                </div>
+
                             </div>
                         </main>
                         <footer class="py-4 bg-light mt-auto">
@@ -252,7 +188,6 @@ export default class Teacher extends Component {
                     </div>
                 </div>
             </div>
-
         );
     }
 }

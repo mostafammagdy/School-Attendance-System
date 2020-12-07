@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const enrolledSchema = new Schema({
   name: { type: String, required: true },
+  studentID: {type: String},
   role: { type: String, required: true },
   classname: { type: String, required: true },
 

@@ -10,11 +10,13 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
   const name = req.body.name;
   const role = req.body.role;
+  const studentID = req.body.studentID;
   const classname = req.body.classname;
 
   const newEnrolled = new Enrolled({
     name,
     role,
+    studentID,
     classname,
   });
 
@@ -40,6 +42,7 @@ Enrolled.findById(req.params.id)
     .then(enrolled => {
     enrolled.name = req.body.name;
     enrolled.role = req.body.role;
+    enrolled.studentID = req.body.studentID;
     enrolled.classname = req.body.classname;
     enrolled.save()
         .then(() => res.json('Enrolled updated!'))
