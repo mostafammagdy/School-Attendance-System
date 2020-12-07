@@ -19,16 +19,13 @@ export default class Login extends Component {
         this.redirectToTeacher = this.redirectToTeacher.bind(this);
 
         this.state = {
-            account: '',
+            account: 'Admin',
             username: '',
             password: ''
         }
 
 
     }
-
-
-
 
 
     handleSubmitClick = (e) => {

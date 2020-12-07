@@ -22,6 +22,7 @@ const studentsRouter = require('./routes/students');
 const classroomsRouter = require('./routes/classrooms');
 const attendancesRouter = require('./routes/attendances');
 const enrolledsRouter = require('./routes/enrolleds');
+const secretarysRouter = require('./routes/secretarys');
 
 
 
@@ -31,6 +32,7 @@ app.use('/students', studentsRouter);
 app.use('/classrooms', classroomsRouter);
 app.use('/attendances', attendancesRouter);
 app.use('/enrolleds', enrolledsRouter);
+app.use('/secretarys', secretarysRouter);
 
 
 app.listen(port, () => {

@@ -4,20 +4,292 @@ import "./styles.css"
 
 import axios from 'axios';
 
+const Records = props => (
+    <tr class="attendance">
+        <td>{props.record.name}</td>
+        <td>{props.record.school}</td>
+        <td><a href='#'>Edit</a></td>
+        <td><a href='#'>Delete</a></td>
+    </tr>
+)
 
 export default class Admin extends Component {
 
     constructor(props) {
         super(props);
 
+        this.showSchool = this.showSchool.bind(this);
+        this.createSecretary = this.createSecretary.bind(this);
+        this.manageSecretary = this.manageSecretary.bind(this);
 
 
         this.state = {
+            shows: false,
+            create: false,
+            manage: false,
+            sec: [],
 
         };
     }
 
+    componentDidMount() {
+        axios.get('http://localhost:5000/secretarys/')
+            .then(response => {
+                this.setState({ sec: response.data })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
 
+
+    }
+    recordList() {
+
+        return this.state.sec.map(s => {
+            return <Records record={s} />;
+        })
+    }
+
+    createAccounts(){
+        return (
+            <h1> Create Account </h1>
+        )
+    }
+
+    manageAccounts(){
+        return (
+            <div>
+            <h1> Manage Account </h1>
+                <table className="table">
+                    <thead className="thead-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>School Name</th>
+                            <th>Edit </th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.recordList()}
+                    </tbody>
+                </table>
+                </div>
+            );
+    }
+
+    schoolTable() {
+        return (
+
+            <table className="table">
+                <thead className="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Picture</th>
+                        <th>Location</th>
+                        <th>Population</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">A. Y. Jackson Secondary School</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A._Y._Jackson_Secondary_School_%28Toronto%29.jpg/2880px-A._Y._Jackson_Secondary_School_%28Toronto%29.jpg" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>North York</td>
+                        <td>1,055</td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Agincourt Collegiate Institute</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Agincourt_Collegiate_Institute.JPG/300px-Agincourt_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>Scarborough</td>
+                        <td>1,236</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Birchmount Park Collegiate Institute</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Birchmount_Park_Collegiate_Institute.JPG/298px-Birchmount_Park_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>Scarborough</td>
+                        <td>849</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">C. W. Jefferys Collegiate Institute</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/C.W._Jefferys_Collegiate_Institute.JPG/300px-C.W._Jefferys_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>North York</td>
+                        <td>731</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Central Toronto Academy</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Central_Toronto_Academy_%2837601930775%29.jpg/300px-Central_Toronto_Academy_%2837601930775%29.jpg" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>Toronto</td>
+                        <td>537</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Don Mills Collegiate Institute</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Don_Mills_Collegiate_Institute.JPG/300px-Don_Mills_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>North York</td>
+                        <td>1,055</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Lawrence Park Collegiate Institute</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Lawrence_Park_Collegiate_Institute.JPG/300px-Lawrence_Park_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>Toronto</td>
+                        <td>1,162</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Parkdale Collegiate Institute</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Parkdale_Colleiate_Institute.JPG/300px-Parkdale_Colleiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>Toronto</td>
+                        <td>500</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Thistletown Collegiate Institute</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Thistletown_Collegiate_Institute.jpg/300px-Thistletown_Collegiate_Institute.jpg" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>Etobicoke</td>
+                        <td>485</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">York Memorial Collegiate Institute</th>
+                        <td class="w-25">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/York_Memo_Coll.JPG/300px-York_Memo_Coll.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                            </img>
+                        </td>
+                        <td>York</td>
+                        <td>871</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        );
+    }
+
+    menu() {
+        return (
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Dashboard</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                    <div class="mid" >
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-primary text-white mb-4">
+                                    <a class="small text-white stretched-link" href="#" onClick={this.showSchool} >
+                                        <div class="card-body">Display All Schools</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
+                                    <a class="small text-white stretched-link" href="#" onClick={this.createSecretary}>
+                                        <div class="card-body">Create Secretary Account</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-success text-white mb-4">
+                                    <a class="small text-white stretched-link" href="#" onClick={this.manageSecretary}>
+                                        <div class="card-body">Manage Secretary Account</div>
+                                        <div class="card-footer d-flex align-items-center justify-content-between">
+                                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+            </main>
+        )
+    }
+
+    showSchool() {
+
+        this.setState({
+            shows: true
+        })
+
+    }
+    createSecretary() {
+
+        this.setState({
+            create: true
+        })
+
+    }
+    manageSecretary() {
+
+        this.setState({
+            manage: true
+        })
+
+    }
 
     render() {
         return (
@@ -45,7 +317,7 @@ export default class Admin extends Component {
                             <div class="sb-sidenav-menu">
                                 <div class="nav">
                                     <div class="sb-sidenav-menu-heading">Core</div>
-                                    <a class="nav-link" href="index.html">
+                                    <a class="nav-link" href="/admin">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                         Dashboard
                             </a>
@@ -56,73 +328,29 @@ export default class Admin extends Component {
                             </div>
                             <div class="sb-sidenav-footer">
                                 <div class="small">Logged in as:</div>
-                                Name
+                                
                     </div>
                         </nav>
                     </div>
                     <div id="layoutSidenav_content">
-                        <main>
-                            <div class="container-fluid">
-                                <h1 class="mt-4">Dashboard</h1>
-                                <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item active">Dashboard</li>
-                                </ol>
-                                <div class="row">
-                                    <div class="col-xl-3 col-md-6">
-                                        <div class="card bg-primary text-white mb-4">
-                                        <a class="small text-white stretched-link" href="/aschool" >
-                                        <div class="card-body">Display All Schools</div>
-                                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                            </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-md-6">
-                                        <div class="card bg-warning text-white mb-4">
-                                        <a class="small text-white stretched-link" href="#" >
-                                        <div class="card-body">Create Secretary Account</div>
-                                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                            </div>
-                                            </a>
-                                        </div>
-                                    </div>
+                    {this.state.shows == true ? this.schoolTable() :
+                    this.state.create == true ? this.createAccounts() :
+                this.state.manage == true ? this.manageAccounts(): this.menu()} 
 
-                                    <div class="col-xl-3 col-md-6">
-                                        <div class="card bg-success text-white mb-4">
-                                        <a class="small text-white stretched-link" href="#" >
-                                        <div class="card-body">Manage Secretary Account</div>
-                                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                            </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-
-
-
-
-                        </main>
                     <footer class="py-4 bg-light mt-auto">
-                        <div class="container-fluid">
-                            <div class="d-flex align-items-center justify-content-between small">
-                                <div class="text-muted">Copyright &copy; School System 2020</div>
-                                <div>
-                                    <a href="#">Privacy Policy</a>
-                                    &middot;
+                            <div class="container-fluid">
+                                <div class="d-flex align-items-center justify-content-between small">
+                                    <div class="text-muted">Copyright &copy; School System 2020</div>
+                                    <div>
+                                        <a href="#">Privacy Policy</a>
+                                        &middot;
                                 <a href="#">Terms &amp; Conditions</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </footer>
+                        </footer>
+                    </div>
                 </div>
-            </div>
             </div >
 
         );
