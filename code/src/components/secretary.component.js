@@ -25,10 +25,25 @@ export default class admins extends Component {
         this.showSchool = this.showSchool.bind(this);
         this.createAcc = this.createAcc.bind(this);
         this.manageAcc = this.manageAcc.bind(this);
+        this.searchAcc = this.searchAcc.bind(this);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeRole = this.onChangeRole.bind(this);
+        this.onChangeName = this.onChangeName.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
 
         this.state = { 
             school: '',
             status: '',
+            create: '',
+            manage: '',
+            search: '',
+            username: "",
+            password: "",
+            child: "",
+            role: "Regular Teacher",
+            name: "",
             parents: [],
             students: [],
             teachers: [],
@@ -64,6 +79,7 @@ export default class admins extends Component {
             currentstudent: temp
         })
     }
+
     manageAccounts() {
         return (
             <div>
@@ -78,12 +94,20 @@ export default class admins extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.recordList()}
                     </tbody>
                 </table>
             </div>
         );
     }
+
+    searchAccounts() {
+        return (
+            <div>
+                <h1> Search Account </h1>
+                </div>
+        );
+    }
+
 
     schoolTable() {
         return (
@@ -274,6 +298,14 @@ export default class admins extends Component {
         })
     }
 
+    searchAcc() {
+
+        this.setState({
+            search: true
+        })
+    }
+
+
     menu() {
         return (
             
@@ -307,7 +339,7 @@ export default class admins extends Component {
 
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card bg-warning text-white mb-4">
-                                        <a class="small text-white stretched-link" href="#" >
+                                        <a class="small text-white stretched-link" href="#" onClick={this.createAcc}>
                                         <div class="card-body">Create new Account</div>
                                             <div class="card-footer d-flex align-items-center justify-content-between">
                                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -318,7 +350,7 @@ export default class admins extends Component {
 
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card bg-success text-white mb-4">
-                                        <a class="small text-white stretched-link" href="#" >
+                                        <a class="small text-white stretched-link" href="#" onClick={this.manageAcc}>
                                         <div class="card-body">Manage Account</div>
                                             <div class="card-footer d-flex align-items-center justify-content-between">
                                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -329,7 +361,7 @@ export default class admins extends Component {
 
                                          <div class="col-xl-3 col-md-6">
                                         <div class="card bg-danger text-white mb-4">
-                                        <a class="small text-white stretched-link" href="#" >
+                                        <a class="small text-white stretched-link" href="#" onClick={this.searchAcc}>
                                         <div class="card-body">Search Account</div>
                                             <div class="card-footer d-flex align-items-center justify-content-between">
                                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -349,11 +381,92 @@ export default class admins extends Component {
                         </main>
         );
     }
+
+    
+    onChangeUsername(e) {
+        this.setState({
+            username: e.target.value
+        })
+    }
+
+    onChangePassword(e) {
+        this.setState({
+            password: e.target.value
+        })
+    }
+
+    onChangeName(e) {
+        this.setState({
+            name: e.target.value
+        })
+    }
+    onChangeRole(e) {
+        this.setState({
+            role: e.target.value
+        })
+    }
+
+    onChangeChild(e) {
+        this.setState({
+            child: e.target.value
+        })
+    }
+
+    createUser() {
+        return (
+            <div>
+            <div className="form-group">
+                        <label>Username: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.username}
+                            onChange={this.onChangeUsername}
+                        />
+                    </div>
+            <div className="form-group">
+            <label>Password: </label>
+            <input type="text"
+                required
+                className="form-control"
+                value={this.state.password}
+                onChange={this.onChangePassword}
+            />
+        </div>
+        </div>
+        )
+    }
+
+    createChild() {
+        return (
+            <div>
+            <div className="form-group">
+                        <label>Child: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.child}
+                            onChange={this.onChangeChild}
+                        />
+                    </div>
+        </div>
+        )
+    }
     createAccounts() {
         return (
             <div>
-                <h3>Create New Secretary Account</h3>
+                <h3>Create New Account</h3>
                 <form onSubmit={this.onSubmit}>
+                <div className="form-group">
+                        <label for="custom-select">Select Type:</label>
+                        <select className="custom-select" id="classname" value={this.state.role}
+                            onChange={this.onChangeRole} >
+                            <option value="Regular Teacher">Regular Teacher</option>
+                            <option value="Supply Teacher">Supply Teacher</option>
+                            <option value="Student">Student</option>
+                            <option value="Parent">Parent</option>
+                        </select>
+                    </div>
                     <div className="form-group">
                         <label>Name: </label>
                         <input type="text"
@@ -363,34 +476,8 @@ export default class admins extends Component {
                             onChange={this.onChangeName}
                         />
                     </div>
-                    <div className="form-group">
-                        <label>Username: </label>
-                        <input type="text"
-                            required
-                            className="form-control"
-                            value={this.state.username}
-                            onChange={this.onChangeUsername}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Password: </label>
-                        <input type="text"
-                            required
-                            className="form-control"
-                            value={this.state.password}
-                            onChange={this.onChangePassword}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label for="custom-select">Select School:</label>
-                        <select className="custom-select" id="classname" value={this.state.school}
-                            onChange={this.onChangeSchool} >
-                            <option value="A. Y. Jackson Secondary School">A. Y. Jackson Secondary School</option>
-                            <option value="Agincourt Collegiate Institute">Agincourt Collegiate Institute</option>
-                            <option value="Birchmount Park Collegiate Institute">Birchmount Park Collegiate Institute</option>
-                            <option value="C. W. Jefferys Collegiate Institute">C. W. Jefferys Collegiate Institute</option>
-                        </select>
-                    </div>
+                    {this.state.role == "Regular Teacher" || this.state.role == "Supply Teacher" || this.state.role == "Parent" ? this.createUser(): <h2></h2> }
+                    {this.state.role == "Parent" ? this.createChild() : <h1></h1>}
                     <div className="form-group">
                         <input type="submit" value="Create User" className="btn btn-primary" />
                     </div>
@@ -431,7 +518,7 @@ export default class admins extends Component {
                             <div class="sb-sidenav-menu">
                                 <div class="nav">
                                     <div class="sb-sidenav-menu-heading">Core</div>
-                                    <a class="nav-link" href="/admin">
+                                    <a class="nav-link" href="/secretary">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                         Dashboard
                             </a>
@@ -449,7 +536,8 @@ export default class admins extends Component {
                     <div id="layoutSidenav_content">
                         {this.state.shows == true ? this.schoolTable() :
                             this.state.create == true ? this.createAccounts() :
-                                this.state.manage == true ? this.manageAccounts() : this.menu()}
+                                this.state.manage == true ? this.manageAccounts() :
+                                this.state.search == true ? this.searchAccounts: this.menu()}
 
                         <footer class="py-4 bg-light mt-auto">
                             <div class="container-fluid">
