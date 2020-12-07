@@ -116,7 +116,7 @@ export default class Admin extends Component {
                     </div>
                     <div className="form-group">
                         <label>Password: </label>
-                        <input type="text"
+                        <input type="password"
                             required
                             className="form-control"
                             value={this.state.password}
@@ -403,7 +403,7 @@ export default class Admin extends Component {
         return (
             <div class="sideToggle">
                 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-                    <a class="navbar-brand" href="index.html">Admin</a>
+                    <a class="navbar-brand" href="/admin">Admin</a>
                     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#" onClick={this.toggleSidebar}><i class="fas fa-bars"></i></button>
                     {/*<!-- Navbar Search-->*/}
                     <div class="input-group">

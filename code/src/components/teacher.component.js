@@ -174,7 +174,7 @@ export default class Teacher extends Component {
         return (
             <div class="sideToggle">
                 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-                    <a class="navbar-brand" href="index.html">Teacher</a>
+                    <a class="navbar-brand" href="/teacher">Teacher</a>
                     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#" onClick={this.toggleSidebar}><i class="fas fa-bars"></i></button>
                     {/*<!-- Navbar Search-->*/}
                     <div class="input-group">

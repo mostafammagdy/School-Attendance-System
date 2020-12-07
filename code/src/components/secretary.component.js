@@ -30,6 +30,8 @@ export default class admins extends Component {
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
+        this.onChangeChild = this.onChangeChild.bind(this);
+
         this.onSubmit = this.onSubmit.bind(this);
 
 
@@ -104,7 +106,7 @@ export default class admins extends Component {
         return (
             <div>
                 <h1> Search Account </h1>
-                </div>
+            </div>
         );
     }
 
@@ -263,18 +265,47 @@ export default class admins extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const attendance = {
-            name: this.state.name,
-            classname: this.state.classname,
-            status: this.state.status,
-        }
+        if (this.state.role == "Supply Teacher" || this.state.role == "Regular Teacher"){
+            const teacher = {
+                name: this.state.name,
+                username: this.state.username,
+                password: this.state.password,
+                regular: true,
+            }
 
-        console.log(attendance);
+            console.log(teacher)
 
-        axios.post('http://localhost:5000/attendances/add', attendance)
+            axios.post('http://localhost:5000/teachers/add', teacher)
             .then(res => console.log(res.data));
 
-        window.location = '/';
+        }
+        
+
+        else if (this.state.role == "Student"){
+            const student = {
+                name: this.state.name,
+            }
+            axios.post('http://localhost:5000/students/add', student)
+            .then(res => console.log(res.data));
+
+        }
+
+        else if (this.state.role == "Parent"){
+            const parent = {
+                name: this.state.name,
+                username: this.state.username,
+                password: this.state.password,
+                student: this.state.child,
+            }
+
+            console.log(parent)
+
+            axios.post('http://localhost:5000/parents/add', parent)
+            .then(res => console.log(res.data));
+
+        }
+        
+        window.location = '/secretary';
     }
 
     showSchool() {
@@ -426,7 +457,7 @@ export default class admins extends Component {
                     </div>
             <div className="form-group">
             <label>Password: </label>
-            <input type="text"
+            <input type="password"
                 required
                 className="form-control"
                 value={this.state.password}
@@ -496,7 +527,7 @@ export default class admins extends Component {
         return (
             <div class="sideToggle">
                 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-                    <a class="navbar-brand" href="index.html">Secretary</a>
+                    <a class="navbar-brand" href="/secretary">Secretary</a>
                     <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#" onClick={this.toggleSidebar}><i class="fas fa-bars"></i></button>
                     {/*<!-- Navbar Search-->*/}
                     <div class="input-group">
@@ -537,7 +568,7 @@ export default class admins extends Component {
                         {this.state.shows == true ? this.schoolTable() :
                             this.state.create == true ? this.createAccounts() :
                                 this.state.manage == true ? this.manageAccounts() :
-                                this.state.search == true ? this.searchAccounts: this.menu()}
+                                this.state.search == true ? this.searchAccounts(): this.menu()}
 
                         <footer class="py-4 bg-light mt-auto">
                             <div class="container-fluid">
