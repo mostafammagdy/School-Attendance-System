@@ -393,6 +393,12 @@ export default class Admin extends Component {
 
     }
 
+    
+    toggleSidebar() {
+        var side = document.getElementsByClassName("sideToggle");
+        side[0].classList.toggle("sb-sidenav-toggled");
+    }
+
     render() {
         return (
             <div class="sideToggle">

@@ -21,14 +21,17 @@ export default class admins extends Component {
     constructor(props) {
         super(props);
         
-        //this.onC32hangeClassroom = this.onChangeClassroom.bind(this);
-        //this.takeAttendance = this.takeAttendance.bind(this);
-        
+       
+        this.showSchool = this.showSchool.bind(this);
+        this.createAcc = this.createAcc.bind(this);
+        this.manageAcc = this.manageAcc.bind(this);
 
         this.state = { 
             school: '',
             status: '',
-            secretarys: [],
+            parents: [],
+            students: [],
+            teachers: [],
             currentstudent: [],
             classrooms: [] 
         };
@@ -61,7 +64,26 @@ export default class admins extends Component {
             currentstudent: temp
         })
     }
-
+    manageAccounts() {
+        return (
+            <div>
+                <h1> Manage Account </h1>
+                <table className="table">
+                    <thead className="thead-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>School Name</th>
+                            <th>Edit </th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.recordList()}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
 
     schoolTable() {
         return (
@@ -212,20 +234,7 @@ export default class admins extends Component {
         );
     }
 
-    classSelect() {
-        return (
-            <div>
-                <select className="custom-select" id="classname"
-                    value={this.state.classroom}
-                    onChange={this.onChangeClassroom}>
-                    {this.state.classrooms.map(classroom => (
-                        <option key={classroom.classname} value={classroom.classname}>{classroom.classname}</option>
-                    ))}
-                </select>
-            </div>
-        );
-
-    }
+    
 
     onSubmit(e) {
         e.preventDefault();
@@ -244,146 +253,31 @@ export default class admins extends Component {
         window.location = '/';
     }
 
-    takeAttendance(e) {
-        e.preventDefault();
-        console.log("test")
-            var check = "";
-            var a = "";
-            var attendance = document.getElementsByClassName("attendance");
-            for(var i = 0; i < attendance.length; i++)
-            {
-                a = attendance[i].cells;
-                if (a[1].children[0].checked == true){
-                    check = a[1].children[0].value;
-                }
-                if (a[2].children[0].checked == true){
-                    check = a[2].children[0].value;
-                }
-                if (a[3].children[0].checked == true){
-                    check = a[3].children[0].value;
-                }
+    showSchool() {
 
-                console.log(a[0].children[0].value);
-                console.log(check);
-
-                const att = {
-                    name: a[0].children[0].value,
-                    classname: this.state.classroom,
-                    status: check,
-                }
-
-                axios.post('http://localhost:5000/attendances/add', att)
-                    .then(res => console.log(res.data));
-            }
-            window.location = '/';
+        this.setState({
+            shows: true
+        })
 
     }
+    createAcc() {
 
-    render() {
+        this.setState({
+            create: true
+        })
+
+    }
+    manageAcc() {
+
+        this.setState({
+            manage: true
+        })
+    }
+
+    menu() {
         return (
-            <div>
-                <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-                    <a class="navbar-brand" href="index.html">Secretary</a>
-                    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
-                    {/*<!-- Navbar Search-->*/}
-                    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-                        <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
-                    {/*<!-- Navbar-->*/}
-                    <ul class="navbar-nav ml-auto ml-md-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/">Logout</a>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-                <div id="layoutSidenav">
-                    <div id="layoutSidenav_nav">
-                        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                            <div class="sb-sidenav-menu">
-                                <div class="nav">
-                                    <div class="sb-sidenav-menu-heading">Core</div>
-                                    <a class="nav-link" href="/new">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                        Add new Account
-                            </a>
-                                    <div class="sb-sidenav-menu-heading">Interface</div>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                        Students Profile
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                            <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="/newClassroom" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                        Create Classroom
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                        Display Associated Schools
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                        Manage Student Profile
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                        Manage Teacher Profile
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-
-                                    <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
-                                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                                Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                            </a>
-                                            <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                                <nav class="sb-sidenav-menu-nested nav">
-                                                    <a class="nav-link" href="login.html">Login</a>
-                                                    <a class="nav-link" href="register.html">Register</a>
-                                                    <a class="nav-link" href="password.html">Forgot Password</a>
-                                                </nav>
-                                            </div>
-                                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                                Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                            </a>
-                                            <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages">
-                                                <nav class="sb-sidenav-menu-nested nav">
-                                                    <a class="nav-link" href="401.html">401 Page</a>
-                                                    <a class="nav-link" href="404.html">404 Page</a>
-                                                    <a class="nav-link" href="500.html">500 Page</a>
-                                                </nav>
-                                            </div>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sb-sidenav-footer">
-                                <div class="small">Logged in as:</div>
-                                Name
-                    </div>
-                        </nav>
-                    </div>
-                    <div id="layoutSidenav_content">
-                    <main>
+            
+            <main>
                             <div class="container-fluid">
                                 <h1 class="mt-4">Dashboard</h1>
                                 <ol class="breadcrumb mb-4">
@@ -400,6 +294,17 @@ export default class admins extends Component {
                                             </a>
                                         </div>
                                     </div>
+                                    <div class="col-xl-3 col-md-6">
+                                        <div class="card bg-warning text-white mb-4">
+                                        <a class="small text-white stretched-link" href="/newClassroom" >
+                                        <div class="card-body">Create new Classroom</div>
+                                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                            </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
                                     <div class="col-xl-3 col-md-6">
                                         <div class="card bg-warning text-white mb-4">
                                         <a class="small text-white stretched-link" href="#" >
@@ -442,6 +347,110 @@ export default class admins extends Component {
 
 
                         </main>
+        );
+    }
+    createAccounts() {
+        return (
+            <div>
+                <h3>Create New Secretary Account</h3>
+                <form onSubmit={this.onSubmit}>
+                    <div className="form-group">
+                        <label>Name: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.name}
+                            onChange={this.onChangeName}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Username: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.username}
+                            onChange={this.onChangeUsername}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Password: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.password}
+                            onChange={this.onChangePassword}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label for="custom-select">Select School:</label>
+                        <select className="custom-select" id="classname" value={this.state.school}
+                            onChange={this.onChangeSchool} >
+                            <option value="A. Y. Jackson Secondary School">A. Y. Jackson Secondary School</option>
+                            <option value="Agincourt Collegiate Institute">Agincourt Collegiate Institute</option>
+                            <option value="Birchmount Park Collegiate Institute">Birchmount Park Collegiate Institute</option>
+                            <option value="C. W. Jefferys Collegiate Institute">C. W. Jefferys Collegiate Institute</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <input type="submit" value="Create User" className="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        )
+    }
+   
+    toggleSidebar() {
+        var side = document.getElementsByClassName("sideToggle");
+        side[0].classList.toggle("sb-sidenav-toggled");
+    }
+
+
+    render() {
+        return (
+            <div class="sideToggle">
+                <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+                    <a class="navbar-brand" href="index.html">Secretary</a>
+                    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#" onClick={this.toggleSidebar}><i class="fas fa-bars"></i></button>
+                    {/*<!-- Navbar Search-->*/}
+                    <div class="input-group">
+
+                    </div>
+                    {/*<!-- Navbar-->*/}
+                    <ul class="navbar-nav ml-auto ml-md-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="/">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <div id="layoutSidenav">
+                    <div id="layoutSidenav_nav">
+                        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                            <div class="sb-sidenav-menu">
+                                <div class="nav">
+                                    <div class="sb-sidenav-menu-heading">Core</div>
+                                    <a class="nav-link" href="/admin">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                        Dashboard
+                            </a>
+
+
+
+                                </div>
+                            </div>
+                            <div class="sb-sidenav-footer">
+                                <div class="small">Logged in as:</div>
+
+                            </div>
+                        </nav>
+                    </div>
+                    <div id="layoutSidenav_content">
+                        {this.state.shows == true ? this.schoolTable() :
+                            this.state.create == true ? this.createAccounts() :
+                                this.state.manage == true ? this.manageAccounts() : this.menu()}
+
                         <footer class="py-4 bg-light mt-auto">
                             <div class="container-fluid">
                                 <div class="d-flex align-items-center justify-content-between small">
@@ -456,7 +465,8 @@ export default class admins extends Component {
                         </footer>
                     </div>
                 </div>
-            </div>
+            </div >
+
         );
     }
 }
