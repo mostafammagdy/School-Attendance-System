@@ -85,7 +85,6 @@ export default class Admin extends Component {
         this.setState({
             sec: this.state.sec.filter(el => el._id !== id)
         })
-<<<<<<< HEAD
       }
     
     setSecretaryState(props) {
@@ -114,9 +113,6 @@ export default class Admin extends Component {
         .then(response => {console.log(response.date)});
 
       }
-=======
-    }
->>>>>>> bd82609e798a5fb3d864278126071336e92672ba
 
     onChangeUsername(e) {
         this.setState({
@@ -219,7 +215,6 @@ export default class Admin extends Component {
         window.location = '/admin';
     }
 
-<<<<<<< HEAD
     onSubmitEdit(e) {
         e.preventDefault();
         
@@ -228,8 +223,6 @@ export default class Admin extends Component {
 
     }
     
-=======
->>>>>>> bd82609e798a5fb3d864278126071336e92672ba
     manageAccounts() {
         return (
             <div class="container-fluid">
@@ -526,7 +519,6 @@ export default class Admin extends Component {
 
     }
 
-<<<<<<< HEAD
     manageOne() {
 
         this.setState({
@@ -542,9 +534,6 @@ export default class Admin extends Component {
     }
 
     
-=======
-
->>>>>>> bd82609e798a5fb3d864278126071336e92672ba
     toggleSidebar() {
         var side = document.getElementsByClassName("sideToggle");
         side[0].classList.toggle("sb-sidenav-toggled");
