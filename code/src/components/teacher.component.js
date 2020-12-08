@@ -207,7 +207,6 @@ export default class Teacher extends Component {
                             </div>
                             <div class="sb-sidenav-footer">
                                 <div class="small">Logged in as:</div>
-                                Name
                     </div>
                         </nav>
                     </div>
@@ -232,9 +231,7 @@ export default class Teacher extends Component {
                                         {this.studentTable()}
                                     </div>
                                 </div>
-                                <div class="row test">
-                                    {this.state.classroom}
-                                </div>
+                               
                             </div>
                         </main>
                         <footer class="py-4 bg-light mt-auto">

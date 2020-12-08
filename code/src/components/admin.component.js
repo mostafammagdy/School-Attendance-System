@@ -7,6 +7,7 @@ import axios from 'axios';
 const Records = props => (
     <tr class="attendance">
         <td>{props.record.name}</td>
+        <td>{props.record.username}</td>
         <td>{props.record.school}</td>
         <td><a href='#'>Edit</a></td>
         <td><a href="#" onClick={() => { props.deleteSecretary(props.record._id) }}>Delete</a></td>
@@ -131,6 +132,9 @@ export default class Admin extends Component {
                             <option value="Agincourt Collegiate Institute">Agincourt Collegiate Institute</option>
                             <option value="Birchmount Park Collegiate Institute">Birchmount Park Collegiate Institute</option>
                             <option value="C. W. Jefferys Collegiate Institute">C. W. Jefferys Collegiate Institute</option>
+                            <option value="Central Toronto Academy">Central Toronto Academy</option>
+                            <option value="Don Mills Collegiate Institute">Don Mills Collegiate Institute</option>
+                            <option value="Parkdale Collegiate Institute">Parkdale Collegiate Institute</option>
                         </select>
                     </div>
                     <div className="form-group">
@@ -166,6 +170,7 @@ export default class Admin extends Component {
                     <thead className="thead-light">
                         <tr>
                             <th>Name</th>
+                            <th>Username</th>
                             <th>School Name</th>
                             <th>Edit </th>
                             <th>Delete</th>

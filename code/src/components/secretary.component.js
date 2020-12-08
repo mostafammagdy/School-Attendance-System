@@ -8,6 +8,7 @@ const Teachers = props => (
     <tr>
         <td>{props.record.name}</td>
         <td>{props.record.username}</td>
+        <td>{props.record.regular.toString()}</td>
         <td><a href='#'>Edit</a></td>
         <td><a href="#" onClick={() => { props.deleteTeacher(props.record._id) }}>Delete</a></td>
     </tr>
@@ -73,7 +74,7 @@ export default class admins extends Component {
             create: '',
             manage: '',
             search: '',
-            m: '',
+            m: "Regular Teacher",
             username: "",
             password: "",
             child: "",
@@ -247,6 +248,7 @@ export default class admins extends Component {
                             {this.state.m == "Regular Teacher" ? <tr>
                                 <th>Name</th>
                                 <th>Username</th>
+                                <th>Regular/Supply</th>
                                 <th>Edit </th>
                                 <th>Delete</th>
                             </tr> :
