@@ -10,6 +10,7 @@ import classroom from './components/createClassroom';
 import aschool from './components/aschools';
 import Parent from './components/parent.component';
 import Admin from './components/admin.component';
+import Enroll from './components/enroll.component';
 
 
 
@@ -23,6 +24,7 @@ function App() {
       <Route path="/newClassroom" component={classroom} />
       <Route path="/aschool" component={aschool} />
       <Route path="/parent" component={Parent} />
+      <Route path="/enroll" component={Enroll} />
 
       <Route path="/admin" component={Admin} />
 

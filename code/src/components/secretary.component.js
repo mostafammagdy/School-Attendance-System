@@ -61,7 +61,6 @@ export default class admins extends Component {
         this.onChangeSearch = this.onChangeSearch.bind(this);
         this.findAcc = this.findAcc.bind(this);
 
-
         this.deleteTeacher = this.deleteTeacher.bind(this)
         this.deleteParent = this.deleteParent.bind(this)
         this.deleteStudent = this.deleteStudent.bind(this)
@@ -548,7 +547,7 @@ export default class admins extends Component {
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-6">
-                            <div class="card bg-warning text-white mb-4">
+                            <div class="card bg-secondary text-white mb-4">
                                 <a class="small text-white stretched-link" href="/newClassroom" >
                                     <div class="card-body">Create new Classroom</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -584,6 +583,18 @@ export default class admins extends Component {
                             <div class="card bg-danger text-white mb-4">
                                 <a class="small text-white stretched-link" href="#" onClick={this.searchAcc}>
                                     <div class="card-body">Search Account</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </a>
+                            </div>
+
+
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-info  text-white mb-4">
+                                <a class="small text-white stretched-link" href="/enroll">
+                                    <div class="card-body">Enroll Users to Classroom</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                                     </div>
