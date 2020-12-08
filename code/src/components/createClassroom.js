@@ -42,7 +42,7 @@ export default class CreateClassroom extends Component {
 
   createClass() {
     return (
-      <div>
+        <div class="container-fluid">
         <h3>Create New Classroom</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group"> 
