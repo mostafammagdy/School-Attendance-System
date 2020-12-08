@@ -8,7 +8,10 @@ const Records = props => (
     <tr class="attendance">
         <td>{props.record.name}</td>
         <td>{props.record.school}</td>
-        <td><a href='#'>Edit</a></td>
+        <td><a href='#' onClick={() => {props.manageOne();
+    props.setSecretaryState(props.record);    
+    }
+    }>Edit</a></td>
         <td><a href="#" onClick={() => { props.deleteSecretary(props.record._id) }}>Delete</a></td>
     </tr>
 )
@@ -21,23 +24,29 @@ export default class Admin extends Component {
         this.showSchool = this.showSchool.bind(this);
         this.createSecretary = this.createSecretary.bind(this);
         this.manageSecretary = this.manageSecretary.bind(this);
+        this.manageOne = this.manageOne.bind(this);
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeSchool = this.onChangeSchool.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.deleteSecretary = this.deleteSecretary.bind(this)
+        this.onSubmitEdit = this.onSubmitEdit.bind(this);
+        this.deleteSecretary = this.deleteSecretary.bind(this);
+        this.setSecretaryState = this.setSecretaryState.bind(this);
+        this.updateSecretary = this.updateSecretary.bind(this);
 
 
         this.state = {
             shows: false,
             create: false,
             manage: false,
+            manageSingle: false,
             sec: [],
             username: "",
             password: "",
             school: "",
             name: "",
+            id: "",
 
         };
     }
@@ -51,6 +60,23 @@ export default class Admin extends Component {
                 console.log(error);
             })
     }
+
+    componentDidUpdate() {
+
+        axios.get('http://localhost:5000/secretarys/')
+            .then(response => {
+                this.setState({ sec: response.data })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+
+    }
+
+
+
+
     deleteSecretary(id) {
         axios.delete('http://localhost:5000/secretarys/'+id)
           .then(response => { console.log(response.data)});
@@ -58,6 +84,33 @@ export default class Admin extends Component {
         this.setState({
           sec: this.state.sec.filter(el => el._id !== id)
         })
+      }
+    
+    setSecretaryState(props) {
+        this.setState({
+            name: props.name,
+            username: props.username,
+            password: props.password,
+            id: props._id
+        })
+
+      }
+
+
+      updateSecretary() {
+
+        const payload = {
+            username: this.state.username,
+            password: this.state.password,
+            school: this.state.school,
+            name: this.state.name,
+        }
+
+        console.log("state id: "+this.state.id);
+
+        axios.post('http://localhost:5000/secretarys/update/'+this.state.id, payload)
+        .then(response => {console.log(response.date)});
+
       }
 
     onChangeUsername(e) {
@@ -87,7 +140,7 @@ export default class Admin extends Component {
     recordList() {
 
         return this.state.sec.map(s => {
-            return <Records record={s} deleteSecretary={this.deleteSecretary} />;
+            return <Records record={s} deleteSecretary={this.deleteSecretary} manageOne={this.manageOne} setSecretaryState={this.setSecretaryState}/>;
         })
     }
 
@@ -157,6 +210,14 @@ export default class Admin extends Component {
 
         window.location = '/admin';
     }
+
+    onSubmitEdit(e) {
+        e.preventDefault();
+        
+        this.updateSecretary();
+
+
+    }
     
     manageAccounts() {
         return (
@@ -175,8 +236,67 @@ export default class Admin extends Component {
                         {this.recordList()}
                     </tbody>
                 </table>
+
+                {this.state.manageSingle == true ? this.manageOneAccount() : <p></p>  }
+
             </div>
+            
         );
+    }
+
+    manageOneAccount() {
+
+        return (
+            <div>
+                <h3>Edit Secretary Account</h3>
+                <form onSubmit={this.onSubmitEdit}>
+                    <div className="form-group">
+                        <label>Name: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.name}
+                            onChange={this.onChangeName}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Username: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.username}
+                            onChange={this.onChangeUsername}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Password: </label>
+                        <input type="password"
+                            required
+                            className="form-control"
+                            value={this.state.password}
+                            onChange={this.onChangePassword}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label for="custom-select">Select School:</label>
+                        <select className="custom-select" id="classname" value={this.state.school}
+                            onChange={this.onChangeSchool} >
+                            <option value="A. Y. Jackson Secondary School">A. Y. Jackson Secondary School</option>
+                            <option value="Agincourt Collegiate Institute">Agincourt Collegiate Institute</option>
+                            <option value="Birchmount Park Collegiate Institute">Birchmount Park Collegiate Institute</option>
+                            <option value="C. W. Jefferys Collegiate Institute">C. W. Jefferys Collegiate Institute</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <input type="submit" value="Apply Changes" className="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        )
+
+
+
+
     }
 
     schoolTable() {
@@ -393,6 +513,20 @@ export default class Admin extends Component {
 
     }
 
+    manageOne() {
+
+        this.setState({
+            manageSingle: true
+        })
+
+     
+
+        console.log('manage one: ' + this.state.manageSingle);
+
+        
+
+    }
+
     
     toggleSidebar() {
         var side = document.getElementsByClassName("sideToggle");
@@ -443,7 +577,8 @@ export default class Admin extends Component {
                     <div id="layoutSidenav_content">
                         {this.state.shows == true ? this.schoolTable() :
                             this.state.create == true ? this.createAccounts() :
-                                this.state.manage == true ? this.manageAccounts() : this.menu()}
+                                this.state.manage == true ? this.manageAccounts() :
+                                    this.state.manageSingle == true ? this.manageOneAccount() : this.menu()}
 
                         <footer class="py-4 bg-light mt-auto">
                             <div class="container-fluid">
