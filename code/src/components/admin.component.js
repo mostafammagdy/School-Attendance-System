@@ -220,6 +220,10 @@ export default class Admin extends Component {
         
         this.updateSecretary();
 
+        this.setState({
+            manageSingle: false
+        })
+
 
     }
     
