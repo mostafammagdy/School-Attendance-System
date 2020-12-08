@@ -7,6 +7,7 @@ import axios from 'axios';
 const Records = props => (
     <tr class="attendance">
         <td>{props.record.name}</td>
+        <td>{props.record.username}</td>
         <td>{props.record.school}</td>
         <td><a href='#' onClick={() => {props.manageOne();
     props.setSecretaryState(props.record);    
@@ -78,12 +79,13 @@ export default class Admin extends Component {
 
 
     deleteSecretary(id) {
-        axios.delete('http://localhost:5000/secretarys/'+id)
-          .then(response => { console.log(response.data)});
-    
+        axios.delete('http://localhost:5000/secretarys/' + id)
+            .then(response => { console.log(response.data) });
+
         this.setState({
-          sec: this.state.sec.filter(el => el._id !== id)
+            sec: this.state.sec.filter(el => el._id !== id)
         })
+<<<<<<< HEAD
       }
     
     setSecretaryState(props) {
@@ -112,6 +114,9 @@ export default class Admin extends Component {
         .then(response => {console.log(response.date)});
 
       }
+=======
+    }
+>>>>>>> bd82609e798a5fb3d864278126071336e92672ba
 
     onChangeUsername(e) {
         this.setState({
@@ -146,7 +151,7 @@ export default class Admin extends Component {
 
     createAccounts() {
         return (
-            <div>
+            <div class="container-fluid">
                 <h3>Create New Secretary Account</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
@@ -184,6 +189,9 @@ export default class Admin extends Component {
                             <option value="Agincourt Collegiate Institute">Agincourt Collegiate Institute</option>
                             <option value="Birchmount Park Collegiate Institute">Birchmount Park Collegiate Institute</option>
                             <option value="C. W. Jefferys Collegiate Institute">C. W. Jefferys Collegiate Institute</option>
+                            <option value="Central Toronto Academy">Central Toronto Academy</option>
+                            <option value="Don Mills Collegiate Institute">Don Mills Collegiate Institute</option>
+                            <option value="Parkdale Collegiate Institute">Parkdale Collegiate Institute</option>
                         </select>
                     </div>
                     <div className="form-group">
@@ -211,6 +219,7 @@ export default class Admin extends Component {
         window.location = '/admin';
     }
 
+<<<<<<< HEAD
     onSubmitEdit(e) {
         e.preventDefault();
         
@@ -219,14 +228,17 @@ export default class Admin extends Component {
 
     }
     
+=======
+>>>>>>> bd82609e798a5fb3d864278126071336e92672ba
     manageAccounts() {
         return (
-            <div>
+            <div class="container-fluid">
                 <h1> Manage Account </h1>
                 <table className="table">
                     <thead className="thead-light">
                         <tr>
                             <th>Name</th>
+                            <th>Username</th>
                             <th>School Name</th>
                             <th>Edit </th>
                             <th>Delete</th>
@@ -301,139 +313,140 @@ export default class Admin extends Component {
 
     schoolTable() {
         return (
+            <div class="container-fluid">
 
-            <table className="table">
-                <thead className="thead-light">
-                    <tr>
-                        <th>Name</th>
-                        <th>Picture</th>
-                        <th>Location</th>
-                        <th>Population</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">A. Y. Jackson Secondary School</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A._Y._Jackson_Secondary_School_%28Toronto%29.jpg/2880px-A._Y._Jackson_Secondary_School_%28Toronto%29.jpg" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>North York</td>
-                        <td>1,055</td>
-                        <td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Agincourt Collegiate Institute</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Agincourt_Collegiate_Institute.JPG/300px-Agincourt_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>Scarborough</td>
-                        <td>1,236</td>
-                        <td>
+                <table className="table">
+                    <thead className="thead-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Picture</th>
+                            <th>Location</th>
+                            <th>Population</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">A. Y. Jackson Secondary School</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/A._Y._Jackson_Secondary_School_%28Toronto%29.jpg/2880px-A._Y._Jackson_Secondary_School_%28Toronto%29.jpg" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>North York</td>
+                            <td>1,055</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Agincourt Collegiate Institute</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Agincourt_Collegiate_Institute.JPG/300px-Agincourt_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>Scarborough</td>
+                            <td>1,236</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Birchmount Park Collegiate Institute</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Birchmount_Park_Collegiate_Institute.JPG/298px-Birchmount_Park_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>Scarborough</td>
-                        <td>849</td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Birchmount Park Collegiate Institute</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Birchmount_Park_Collegiate_Institute.JPG/298px-Birchmount_Park_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>Scarborough</td>
+                            <td>849</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">C. W. Jefferys Collegiate Institute</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/C.W._Jefferys_Collegiate_Institute.JPG/300px-C.W._Jefferys_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>North York</td>
-                        <td>731</td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">C. W. Jefferys Collegiate Institute</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/C.W._Jefferys_Collegiate_Institute.JPG/300px-C.W._Jefferys_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>North York</td>
+                            <td>731</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Central Toronto Academy</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Central_Toronto_Academy_%2837601930775%29.jpg/300px-Central_Toronto_Academy_%2837601930775%29.jpg" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>Toronto</td>
-                        <td>537</td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Central Toronto Academy</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Central_Toronto_Academy_%2837601930775%29.jpg/300px-Central_Toronto_Academy_%2837601930775%29.jpg" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>Toronto</td>
+                            <td>537</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Don Mills Collegiate Institute</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Don_Mills_Collegiate_Institute.JPG/300px-Don_Mills_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>North York</td>
-                        <td>1,055</td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Don Mills Collegiate Institute</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Don_Mills_Collegiate_Institute.JPG/300px-Don_Mills_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>North York</td>
+                            <td>1,055</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Lawrence Park Collegiate Institute</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Lawrence_Park_Collegiate_Institute.JPG/300px-Lawrence_Park_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>Toronto</td>
-                        <td>1,162</td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Lawrence Park Collegiate Institute</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Lawrence_Park_Collegiate_Institute.JPG/300px-Lawrence_Park_Collegiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>Toronto</td>
+                            <td>1,162</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Parkdale Collegiate Institute</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Parkdale_Colleiate_Institute.JPG/300px-Parkdale_Colleiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>Toronto</td>
-                        <td>500</td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Parkdale Collegiate Institute</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Parkdale_Colleiate_Institute.JPG/300px-Parkdale_Colleiate_Institute.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>Toronto</td>
+                            <td>500</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Thistletown Collegiate Institute</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Thistletown_Collegiate_Institute.jpg/300px-Thistletown_Collegiate_Institute.jpg" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>Etobicoke</td>
-                        <td>485</td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Thistletown Collegiate Institute</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Thistletown_Collegiate_Institute.jpg/300px-Thistletown_Collegiate_Institute.jpg" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>Etobicoke</td>
+                            <td>485</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">York Memorial Collegiate Institute</th>
-                        <td class="w-25">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/York_Memo_Coll.JPG/300px-York_Memo_Coll.JPG" class="img-fluid img-thumbnail" alt="Sheep">
-                            </img>
-                        </td>
-                        <td>York</td>
-                        <td>871</td>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">York Memorial Collegiate Institute</th>
+                            <td class="w-25">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/York_Memo_Coll.JPG/300px-York_Memo_Coll.JPG" class="img-fluid img-thumbnail" alt="Sheep">
+                                </img>
+                            </td>
+                            <td>York</td>
+                            <td>871</td>
+                            <td>
 
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         );
     }
 
@@ -513,6 +526,7 @@ export default class Admin extends Component {
 
     }
 
+<<<<<<< HEAD
     manageOne() {
 
         this.setState({
@@ -528,6 +542,9 @@ export default class Admin extends Component {
     }
 
     
+=======
+
+>>>>>>> bd82609e798a5fb3d864278126071336e92672ba
     toggleSidebar() {
         var side = document.getElementsByClassName("sideToggle");
         side[0].classList.toggle("sb-sidenav-toggled");
