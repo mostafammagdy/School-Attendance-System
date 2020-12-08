@@ -52,6 +52,7 @@ export default class admins extends Component {
         this.onChangeChild = this.onChangeChild.bind(this);
         this.onChangeM = this.onChangeM.bind(this);
         this.onChangeSearch = this.onChangeSearch.bind(this);
+        this.findAcc = this.findAcc.bind(this);
 
 
         this.deleteTeacher = this.deleteTeacher.bind(this)
@@ -63,8 +64,12 @@ export default class admins extends Component {
 
         this.state = {
             school: '',
-            search: '',
+            find:false,
+            searchN: '',
             status: '',
+            tempP: '',
+            tempT: '',
+            tempS: '',
             create: '',
             manage: '',
             search: '',
@@ -173,6 +178,56 @@ export default class admins extends Component {
         })
     }
 
+    onChangeSearch(e) {
+        this.setState({
+            searchN: e.target.value,
+            tempT:this.state.teachers.filter(el => el.name == e.target.value || el.username == e.target.value),
+            tempP:this.state.parents.filter(el => el.name == e.target.value || el.username == e.target.value),
+            tempS:this.state.students.filter(el => el.name == e.target.value || el.uuid == e.target.value)
+        })
+
+    
+    }
+
+
+    searchAccounts() {
+        return (
+            <div class="container-fluid">
+        <h3>Search for Account</h3>
+          <div className="form-group"> 
+            <input  type="text"
+                required
+                className="form-control"
+                value={this.state.searchN}
+                onChange={this.onChangeSearch}
+
+                />
+          </div>
+          <div className="form-group">
+            <input type="submit" value="Search" onClick={this.findAcc} className="btn btn-primary" />
+          </div>
+    <table className="table">
+    <tbody>
+
+    {this.state.find == true ? this.teacherList() : <h1></h1>}
+    {this.state.find == true ? this.studentList() : <h1></h1>}
+    {this.state.find == true ? this.parentList() : <h1></h1>}
+    </tbody>
+    </table>
+      </div>
+        );
+    }
+
+    findAcc(){
+        this.setState({
+            find: true,
+            students: this.state.tempS,
+            teachers: this.state.tempT,
+            parents: this.state.tempP,
+
+        })
+    }
+
     manageAccounts() {
         return (
             <div class="container-fluid">
@@ -216,23 +271,6 @@ export default class admins extends Component {
                                     this.state.m == "Student" ? this.studentList() : <h1></h1>}
                         </tbody>
                     </table>
-                </div>
-            </div>
-        );
-    }
-
-    searchAccounts() {
-        return (
-            <div class="container-fluid">
-                <h1> Search Account </h1>
-                <div className="form-group">
-                    <label>Search Account: </label>
-                    <input type="text"
-                        required
-                        className="form-control"
-                        value={this.state.search}
-                        onChange={this.onChangeSearch}
-                    />
                 </div>
             </div>
         );
@@ -463,6 +501,7 @@ export default class admins extends Component {
         this.setState({
             search: true
         })
+
     }
 
 
@@ -549,6 +588,7 @@ export default class admins extends Component {
         this.setState({
             username: e.target.value
         })
+        console.log(this.state.username)
     }
 
 
@@ -581,11 +621,6 @@ export default class admins extends Component {
         })
     }
 
-    onChangeSearch(e) {
-        this.setState({
-            search: e.target.value
-        })
-    }
 
     createUser() {
         return (
