@@ -9,8 +9,10 @@ const Teachers = props => (
         <td>{props.record.name}</td>
         <td>{props.record.username}</td>
         <td>{props.record.regular.toString()}</td>
-        <td><a href='#'>Edit</a></td>
-        <td><a href="#" onClick={() => { props.deleteTeacher(props.record._id) }}>Delete</a></td>
+        <td><a href='#' onClick={() => {props.manageOne();
+    props.setTeacherState(props.record);    
+    }
+    }>Edit</a></td>        <td><a href="#" onClick={() => { props.deleteTeacher(props.record._id) }}>Delete</a></td>
     </tr>
 )
 
@@ -18,8 +20,10 @@ const Students = props => (
     <tr >
         <td>{props.record.name}</td>
         <td>{props.record.uuid}</td>
-        <td><a href='#'>Edit</a></td>
-        <td><a href="#" onClick={() => { props.deleteStudent(props.record._id) }}>Delete</a></td>
+        <td><a href='#' onClick={() => {props.manageOne();
+    props.setStudentState(props.record);    
+    }
+    }>Edit</a></td>        <td><a href="#" onClick={() => { props.deleteStudent(props.record._id) }}>Delete</a></td>
     </tr>
 )
 
@@ -28,8 +32,10 @@ const Parents = props => (
         <td>{props.record.name}</td>
         <td>{props.record.username}</td>
         <td>{props.record.student}</td>
-        <td><a href='#'>Edit</a></td>
-        <td><a href="#" onClick={() => { props.deleteParent(props.record._id) }}>Delete</a></td>
+        <td><a href='#' onClick={() => {props.manageOne();
+    props.setParentState(props.record);    
+    }
+    }>Edit</a></td>       <td><a href="#" onClick={() => { props.deleteParent(props.record._id) }}>Delete</a></td>
     </tr>
 )
 
@@ -60,11 +66,18 @@ export default class admins extends Component {
         this.deleteParent = this.deleteParent.bind(this)
         this.deleteStudent = this.deleteStudent.bind(this)
 
+        this.manageOne = this.manageOne.bind(this);
+        this.onSubmitEdit = this.onSubmitEdit.bind(this);
+        this.updateAccount = this.updateAccount.bind(this);
+        this.setTeacherState = this.setTeacherState.bind(this);
+        this.setParentState = this.setParentState.bind(this);
+        this.setStudentState = this.setStudentState.bind(this);
+
         this.onSubmit = this.onSubmit.bind(this);
 
 
         this.state = {
-            school: '',
+            school: "A. Y. Jackson Secondary School",
             find:false,
             searchN: '',
             status: '',
@@ -84,7 +97,11 @@ export default class admins extends Component {
             students: [],
             teachers: [],
             currentstudent: [],
-            classrooms: []
+            classrooms: [],
+            manageSingle: false,
+            id:"",
+            regular:true
+
         };
     }
 
@@ -117,22 +134,23 @@ export default class admins extends Component {
             })
     }
 
+
     studentList() {
 
         return this.state.students.map(s => {
-            return <Students record={s} deleteStudent={this.deleteStudent} />;
+            return <Students record={s} deleteStudent={this.deleteStudent}  manageOne={this.manageOne} setStudentState={this.setStudentState}/>;
         })
     }
     teacherList() {
 
         return this.state.teachers.map(s => {
-            return <Teachers record={s} deleteTeacher={this.deleteTeacher} />;
+            return <Teachers record={s} deleteTeacher={this.deleteTeacher}  manageOne={this.manageOne} setTeacherState={this.setTeacherState}/>;
         })
     }
     parentList() {
 
         return this.state.parents.map(s => {
-            return <Parents record={s} deleteParent={this.deleteParent} />;
+            return <Parents record={s} deleteParent={this.deleteParent}  manageOne={this.manageOne} setParentState={this.setParentState}/>;
         })
     }
 
@@ -273,6 +291,8 @@ export default class admins extends Component {
                                     this.state.m == "Student" ? this.studentList() : <h1></h1>}
                         </tbody>
                     </table>
+                    {this.state.manageSingle == true ? this.manageOneAccount() : <p></p>  }
+
                 </div>
             </div>
         );
@@ -697,6 +717,153 @@ export default class admins extends Component {
             </div>
         )
     }
+
+
+
+    updateAccount() {
+        if (this.state.m == "Supply Teacher" || this.state.m == "Regular Teacher") {
+            const teacher = {
+                name: this.state.name,
+                username: this.state.username,
+                password: this.state.password,
+                regular: true,
+            }
+
+            console.log(teacher)
+
+            axios.post('http://localhost:5000/teachers/update/'+this.state.id, teacher)
+                .then(res => console.log(res.data));
+
+        }
+
+
+        else if (this.state.m == "Student") {
+            const student = {
+                name: this.state.name,
+            }
+            axios.post('http://localhost:5000/students/update/'+this.state.id, student)
+                .then(res => console.log(res.data));
+
+        }
+
+        else if (this.state.m == "Parent") {
+            const parent = {
+                name: this.state.name,
+                username: this.state.username,
+                password: this.state.password,
+                student: this.state.child,
+            }
+
+            console.log(parent)
+
+            axios.post('http://localhost:5000/parents/update/'+this.state.id, parent)
+                .then(res => console.log(res.data));
+
+        }        
+
+        console.log("state id: "+this.state.id);
+
+
+        window.location = '/secretary';
+      }
+
+      onSubmitEdit(e) {
+        e.preventDefault();
+        
+        this.updateAccount();
+
+        this.setState({
+            manageSingle: false
+        })
+
+
+    }
+
+    manageOneAccount() {
+
+        return (
+            <div>
+                <h3>Edit Account</h3>
+                <form onSubmit={this.onSubmitEdit}>
+                
+                    <div className="form-group">
+                        <label>Name: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.name}
+                            onChange={this.onChangeName}
+                        />
+                    </div>
+                    {this.state.m == "Regular Teacher" || this.state.m == "Supply Teacher" || this.state.m == "Parent" ? this.createUser() : <h2></h2>}
+                    {this.state.m == "Parent" ? this.createChild() : <h1></h1>}
+                    <div className="form-group">
+                        <input type="submit" value="Apply Changes" className="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        )
+        }
+
+
+        manageOne() {
+
+            this.setState({
+                manageSingle: true
+            })
+    
+         
+    
+            console.log('manage one: ' + this.state.manageSingle);
+    
+            
+    
+        }
+
+
+        setTeacherState(props) {
+            this.setState({
+                name: props.name,
+                username: props.username,
+                password: props.password,
+                regular: props.regular,
+                id: props._id
+            })
+    
+          }
+
+          setParentState(props) {
+            this.setState({
+                name: props.name,
+                username: props.username,
+                password: props.password,
+                child: props.student,
+                id: props._id
+            })
+    
+          }
+
+          setStudentState(props) {
+            this.setState({
+                name: props.name,
+                id: props._id
+            })
+    
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     toggleSidebar() {
         var side = document.getElementsByClassName("sideToggle");
